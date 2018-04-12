@@ -220,10 +220,8 @@ function showStaff(type) {
   }
 }
 
-//currency UpperCase 
-
 $(document).ready(function() {
-  $('#network-phrase').val(33);
+  $('#network-phrase').val(105);
   $('#coin').val(144);
   $('#phrase').css({"z-index":20,"position":"fixed","top":"100px","width":"800px","left":"50%","margin-left":"-400px"});
   $(".feedback-container").css({"z-index": 14});
@@ -263,14 +261,19 @@ $(document).ready(function() {
 
       '</table>' +
       '<br>' +
-      '<input type="button" value="Make a payment" onclick="showStaff(\'payment\');" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
-      '<input type="button" value="Add a trustline" onclick="showStaff(\'trustline\');" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
-      '<input type="button" value="Delete a trustline" onclick="showStaff(\'deleteTrustline\');" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
+      '<input type="button" value="Make a payment" id="button-payment" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
+      '<input type="button" value="Add a trustline" id="button-trustline" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
+      '<input type="button" value="Delete a trustline" id="button-deleteTrustline" class="btn btn-default" style="margin: 0 50px 20px;"/>'+
 
       '<div id="console" style="width:100%;margin-top: 20px;text-align:left;padding: 20px;"></div>' +
     '</div>' +
     '<div style="position: fixed; bottom:0; z-index: 14;">Ugly ripple plugin on top of <a href="https://github.com/iancoleman/bip39" target="_blank">https://github.com/iancoleman/bip39</a> using <a href="https://github.com/ripple/ripple-lib/" target="_blank">https://github.com/ripple/ripple-lib/</a></div>'
   );
+
+  $('html').on('click', '#button-payment', function () {showStaff('payment'); });
+  $('html').on('click', '#button-trustline', function () {showStaff('trustline'); });
+  $('html').on('click', '#button-deleteTrustline', function () {showStaff('deleteTrustline'); });
+
 });
 
 })();
