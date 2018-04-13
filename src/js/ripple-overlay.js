@@ -33,38 +33,44 @@ function send(node, account, amount, currency, counterparty, recipient, tag, fee
       if (available < 0) available = 0;
       display("Your XRP balance: " + info.xrpBalance + "; You can spend: " + available + " XRP");
       tag = parseInt(tag);
-      api.preparePayment(
-          account,
-          {
-            source: {
-              address: account,
-              maxAmount: {
-                value: amount,
-                currency: currency,
-                counterparty: counterparty
-              }
-            },
-            destination: {
-              address: recipient,
-              amount: {
-                value: amount,
-                currency: currency,
-                counterparty: counterparty
-              },
-              tag: tag
-            },
-            memos: [
-              {
-                type: 'message',
-                format: 'plain/text',
-                data: message
-              }
-            ]
-          },
-          {
-            fee: fees
+
+      var payment = {
+        source: {
+          address: account,
+          maxAmount: {
+            value: amount,
+            currency: currency
           }
-        ).then(function(tx) {
+        },
+        destination: {
+          address: recipient,
+          amount: {
+            value: amount,
+            currency: currency
+          }
+        }
+      };
+
+      if (currency != 'XRP') {
+        payment.source.maxAmount.counterparty = counterparty;
+        payment.destination.amount.counterparty = counterparty;
+      }
+
+
+      if (tag)
+        payment.destination.tag = tag;
+
+      if (message) {
+        payment.memos = [
+          {
+            type: 'message',
+            format: 'plain/text',
+            data: message
+          }
+        ];
+      }
+
+      api.preparePayment(account, payment, {fee: fees}).then(function(tx) {
         var signed = api.sign(tx.txJSON, {privateKey: privateKey, publicKey: publicKey});
         //log(signed);
         api.submit(
